@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('anio');
             $table->integer('precio');
             $table->timestamps();
+            $table->softDeletes();
 
             // Llaves foráneas
             $table->integer('id_usuario');
