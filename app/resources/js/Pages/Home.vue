@@ -13,15 +13,12 @@
                             id="formFileLg"
                             type="file"
                             accept=".xlsx, .xls"
+                            @change="setFile"
                         />
                     </div>
                     <!-- Botones -->
                     <div class="buttons-div">
-                        <button
-                            class="btn btn-danger"
-                            type="submit"
-                            @change="setFile"
-                        >
+                        <button class="btn btn-danger" type="submit">
                             Cancelar
                         </button>
                         <button class="btn btn-success">Enviar</button>
@@ -54,6 +51,8 @@ export default {
         async sendFile() {
             const form = new FormData(); // Crear objeto form
             form.append("file", this.file); // Añadir el archivo
+
+            console.log(this.file);
 
             // Mandar al backend
             try {

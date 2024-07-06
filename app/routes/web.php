@@ -18,10 +18,9 @@ Route::prefix('api')->group(function () {
         Route::get('/', [VehiculoController::class, 'getAll']);
     });
 
-    // Excel
-    // Route::prefix('excel')->group(function () {
-    //     Route::post('/upload', [ExcelController::class, 'upload']);
-    // });
+    Route::prefix('excel')->group(function () {
+        Route::post('/upload', [ExcelController::class, 'upload']);
+    });
 });
 
 // Inertia
