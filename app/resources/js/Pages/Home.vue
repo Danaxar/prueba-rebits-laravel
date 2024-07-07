@@ -56,7 +56,11 @@ export default {
 
             // Mandar al backend
             try {
-                await this.$inertia.post("/api/excel/upload", form);
+                const response = await this.$inertia.post(
+                    "/api/excel/upload",
+                    form
+                );
+                console.log(response);
             } catch (error) {
                 console.log(error);
             }

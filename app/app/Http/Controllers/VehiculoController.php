@@ -18,7 +18,4 @@ class VehiculoController extends Controller
             return response()->json(['message' => 'Error al obtener los vehiculos', 'error' => $e->getMessage()], 500);
         }
     }
-
-    // Inertia
-
 }
