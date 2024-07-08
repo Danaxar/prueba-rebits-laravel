@@ -16,6 +16,8 @@ Route::prefix('api')->group(function () {
     // Vehiculos
     Route::prefix('vehiculos')->group(function () {
         Route::get('/', [VehiculoController::class, 'getAll']);
+        Route::get('/{id}/getDueno', [VehiculoController::class, 'getDueno']);
+        Route::get('/{id}', [VehiculoController::class, 'getById']);
     });
 
     Route::prefix('excel')->group(function () {
@@ -35,4 +37,7 @@ Route::get('/usuarios', function () {
 });
 Route::get('/historicos', function () {
     return Inertia::render('HistoricosPage');
+});
+Route::get('/editar-vehiculo/{id}', function () {
+    return Inertia::render('EditarVehiculoPage');
 });

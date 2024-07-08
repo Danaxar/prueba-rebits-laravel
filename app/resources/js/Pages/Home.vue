@@ -5,9 +5,10 @@
                 <form @submit.prevent="sendFile">
                     <!-- Input de archivo -->
                     <div class="fileInput-div">
-                        <label for="formFileLg" class="form-label"
-                            >Seleccione un archivo excel</label
-                        >
+                        <label for="formFileLg" class="form-label">
+                            <img src="../../../public/icons8-excel.svg" />
+                            Seleccione un archivo excel
+                        </label>
                         <input
                             class="form-control form-control-lg"
                             id="formFileLg"
