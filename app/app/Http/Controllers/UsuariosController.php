@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Usuarios;
-use Illuminate\Support\Facades\Log;
 
 class UsuariosController extends Controller
 {

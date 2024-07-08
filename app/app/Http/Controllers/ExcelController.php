@@ -21,7 +21,9 @@ class ExcelController extends Controller
 
         // Obtener los mensajes post importación
         return response()->json([
-            'messages' => $import->getMessages()
+            'messages' => $import->getMessages(),
+            'status' => 'success',
+            'rows' => $import->getLines()
         ]);
     }
 }
