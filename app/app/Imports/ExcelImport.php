@@ -42,6 +42,7 @@ class ExcelImport implements ToModel
     // Se ejecuta por cada fila del archivo excel
     public function model(array $row)
     {
+        $this->output->writeln('Fila: ' . $row[0] . ' ' . $row[1] . ' ' . $row[2] . ' ' . $row[3] . ' ' . $row[4] . ' ' . $row[5] . ' ' . $row[6] . ' ' . $row[7]);
         $this->current++;
 
         // Desde la 2da fila comienzan los datos

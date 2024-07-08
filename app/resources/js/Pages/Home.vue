@@ -19,10 +19,16 @@
                     </div>
                     <!-- Botones -->
                     <div class="buttons-div">
-                        <button class="btn btn-danger" type="submit">
+                        <button
+                            class="btn btn-danger"
+                            @click="cancelar"
+                            type="button"
+                        >
                             Cancelar
                         </button>
-                        <button class="btn btn-success">Enviar</button>
+                        <button class="btn btn-success" type="submit">
+                            Enviar
+                        </button>
                     </div>
                 </form>
                 <div class="alert alert-danger" v-if="existeError" role="alert">
@@ -36,6 +42,11 @@
                     v-if="successNotification || warningNotification"
                     :message="mensajeNotificacion"
                     :clase="claseNotificacion"
+                ></NotificationComponent>
+                <NotificationComponent
+                    v-if="serverError"
+                    message="Error del servidor, status 500"
+                    clase="error"
                 ></NotificationComponent>
             </div>
             <div class="loading-div" v-if="isLoading">
@@ -70,23 +81,36 @@ export default {
             claseNotificacion: "",
             mensajeNotificacion: "",
             isLoading: false,
+            serverError: false,
         };
     },
     methods: {
         setFile(evento) {
             this.file = evento.target.files[0];
         },
+        cancelar() {
+            this.file = null;
+            document.getElementById("formFileLg").value = null; // Limpiar el input
+            this.existeError = false; // Opcional: limpiar mensajes de error si es necesario
+            this.mensajesErrores = []; // Opcional: limpiar mensajes de error si es necesario
+            this.successNotification = false; // Ocultar notificaciones
+            this.warningNotification = false; // Ocultar notificaciones
+        },
         async sendFile() {
+            if (this.file == null) {
+                alert("Seleccione un archivo excel");
+                return;
+            }
             const form = new FormData(); // Crear objeto form
             form.append("file", this.file); // Añadir el archivo
 
             // Mandar al backend
             try {
-                // const response = await this.$inertia.post(
-                //     "/api/excel/upload",
-                //     form
-                // );
                 this.isLoading = true;
+                // const response = await this.$inertia.post(
+                // "/api/excel/upload",
+                // form
+                // );
                 const response = await axios.post("/api/excel/upload", form, {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -126,6 +150,8 @@ export default {
                 }, 8000);
             } catch (error) {
                 console.log(error);
+                this.isLoading = false;
+                this.serverError = true;
             }
         },
     },

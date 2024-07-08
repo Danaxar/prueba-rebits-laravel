@@ -6,12 +6,16 @@ use Illuminate\Http\Request;
 use App\Imports\ExcelImport;
 use Maatwebsite\Excel\Facades\Excel;
 // use Excel; // Otra forma de importar la clase
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class ExcelController extends Controller
 {
     // API
     public function upload(Request $request)
     {
+
+        $output = new ConsoleOutput();
+        $output->writeln('Leyendo archivo...');
         // Lee el archivo excel que viene en la $request
         // y lo importa con la clase ExcelImport
         // Esta clase para funcionar necesita los métodos

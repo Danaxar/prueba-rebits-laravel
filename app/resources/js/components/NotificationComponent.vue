@@ -59,6 +59,10 @@ export default {
     background-color: #ff9800;
 }
 
+.error {
+    background-color: #f44336;
+}
+
 .fade {
     opacity: 0;
 }

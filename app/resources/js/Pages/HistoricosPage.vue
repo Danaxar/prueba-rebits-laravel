@@ -5,19 +5,21 @@
                 <thead>
                     <tr>
                         <th>ID Usuario</th>
+                        <th>Fecha posesión</th>
                         <th>Nombre</th>
                         <th>Apellidos</th>
                         <th>Correo</th>
                         <th>Patente Vehiculo</th>
                         <th>Marca</th>
                         <th>Modelo</th>
-                        <th>Año</th>
+                        <th>Año Vehiculo</th>
                         <th>Precio</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(v, index) in vehiculosUsuarios" :key="index">
                         <td>{{ v.id }}</td>
+                        <td>{{ v.fecha_inicio }}</td>
                         <td>{{ v.nombre_usuario }}</td>
                         <td>{{ v.apellidos_usuario }}</td>
                         <td>{{ v.correo_usuario }}</td>
