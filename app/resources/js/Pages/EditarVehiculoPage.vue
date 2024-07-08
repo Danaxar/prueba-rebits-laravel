@@ -4,7 +4,7 @@
             <h2 class="mb-4">Editar registro</h2>
             <form @submit.prevent="updateVehiculo">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-16">
                         <div class="card mb-4">
                             <div class="card-body">
                                 <h4>Datos del vehículo</h4>
@@ -104,7 +104,7 @@
                                         type="text"
                                         class="form-control"
                                         id="nombre"
-                                        v-model="dueno.nombre"
+                                        v-model="nuevoDueno.nombre"
                                     />
                                 </div>
                                 <div class="form-group">
@@ -113,7 +113,7 @@
                                         type="text"
                                         class="form-control"
                                         id="apellidos"
-                                        v-model="dueno.apellidos"
+                                        v-model="nuevoDueno.apellidos"
                                     />
                                 </div>
                                 <div class="form-group">
@@ -122,15 +122,11 @@
                                         type="email"
                                         class="form-control"
                                         id="correo"
-                                        v-model="dueno.correo"
+                                        v-model="nuevoDueno.correo"
                                     />
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-4">
-                        <h4>Fecha</h4>
-                        <!-- Aquí puedes agregar tu componente de calendario -->
                     </div>
                 </div>
                 <div class="mt-4 d-flex justify-content-between">
@@ -173,6 +169,11 @@ export default {
                 apellidos: "",
                 correo: "",
             },
+            nuevoDueno: {
+                nombre: "María",
+                apellidos: "García",
+                correo: "maria.garcia@example.com",
+            },
         };
     },
     methods: {
@@ -206,13 +207,24 @@ export default {
                 console.error("Error al obtener el dueño:", error);
             }
         },
+
         async updateVehiculo() {
+            // Mandar el vehículo actualizado
             try {
-                const id = this.getIdUrl();
-                await axios.put(`/api/vehiculos/${id}`, this.vehiculo);
-                alert("Vehículo actualizado correctamente");
-            } catch (error) {
-                console.error("Error al actualizar el vehículo:", error);
+                // const response = await axios.post(
+                const response = await this.$inertia.post(
+                    "/api/vehiculos/nuevoDueno",
+                    {
+                        vehiculo: this.vehiculo,
+                        usuario: this.nuevoDueno,
+                    }
+                );
+                // if (response.status == 200) {
+                //     alert("Vehículo actualizado correctamente");
+                // }
+                console.log("Respuesta updateVehiculo(): ", response);
+            } catch (e) {
+                console.log(e);
             }
         },
         cancelar() {

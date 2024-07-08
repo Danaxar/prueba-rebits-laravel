@@ -18,6 +18,8 @@ Route::prefix('api')->group(function () {
         Route::get('/', [VehiculoController::class, 'getAll']);
         Route::get('/{id}/getDueno', [VehiculoController::class, 'getDueno']);
         Route::get('/{id}', [VehiculoController::class, 'getById']);
+        Route::put('/{id}', [VehiculoController::class, 'update']);
+        Route::post('/nuevoDueno', [VehiculoController::class, 'nuevoDueno']);
     });
 
     Route::prefix('excel')->group(function () {
