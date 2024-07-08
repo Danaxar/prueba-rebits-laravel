@@ -28,6 +28,7 @@ export default {
         };
     },
     mounted() {
+        console.log("clase:", this.clase);
         setTimeout(() => {
             this.fading = true;
             setTimeout(() => {

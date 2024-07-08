@@ -32,8 +32,9 @@
                     </ul>
                 </div>
                 <NotificationComponent
-                    v-if="successNotification"
-                    message="Tarea completada exitosamente"
+                    v-if="successNotification || warningNotification"
+                    :message="mensajeNotificacion"
+                    :clase="claseNotificacion"
                 ></NotificationComponent>
             </div>
         </div>
@@ -60,6 +61,8 @@ export default {
             mensajesErrores: [],
             successNotification: false,
             warningNotification: false,
+            claseNotificacion: "",
+            mensajeNotificacion: "",
         };
     },
     methods: {
@@ -92,13 +95,26 @@ export default {
                     this.mensajesErrores = response.data.messages;
                 }
 
-                if (response.data.rows > response.data.messages.length) {
+                if (response.data.messages.length > 0) {
+                    console.log(
+                        `Caso warning, filas = ${response.data.rows} y total = ${response.data.messages.length}`
+                    );
                     this.warningNotification = true; // Aqui se muestra un recuadro amarillo o naranjo
+                    this.claseNotificacion = "warning";
+                    this.mensajeNotificacion = "Tarea completada con alertas";
                 }
 
-                if (response.data.rows == response.data.messages.length) {
+                if (response.data.messages.length == 0) {
                     this.successNotification = true; // Aqui se muestra un recuadro verde
+                    this.claseNotificacion = "success";
+                    this.mensajeNotificacion =
+                        "¡Tarea completada exitosamente!";
                 }
+
+                setTimeout(() => {
+                    this.successNotification = false;
+                    this.warningNotification = false;
+                }, 8000);
             } catch (error) {
                 console.log(error);
             }
