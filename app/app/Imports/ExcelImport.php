@@ -7,6 +7,7 @@ use App\Models\Usuarios;
 use App\Models\Vehiculos;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use App\Models\Historicos;
 
 class ExcelImport implements ToModel
 {
@@ -68,24 +69,27 @@ class ExcelImport implements ToModel
                     DB::rollBack();
                     return null;
                 } else {  // No
+                    $historico = new Historicos();
                     // Existe usuario?
                     $usuarioEncontrado = Usuarios::where('correo', $usuario->correo)->first();
                     if ($usuarioEncontrado != null) {  // Si
                         $this->output->writeln("Usuario existente encontrado. Asociando vehículo al usuario.");
                         // El usuario ya está en bd asi que solo se guarda el vehiculo con el id del usuario
                         $vehiculo->id_usuario = $usuarioEncontrado->id;
-                        $vehiculo->save();
-                        DB::commit();
-                        return null;
+                        $historico->id_usuario = $usuarioEncontrado->id;
                     } else {  // No
                         $this->output->writeln("Usuario y vehículo nuevos. Guardando ambos.");
                         // Ambos no existen asi que se guardan
-                        $usuario->save();
+                        $usuario->save();  // Aqui se obtiene su nuevo id
+                        $historico->id_usuario = $usuario->id;
                         $vehiculo->id_usuario = $usuario->id;
-                        $vehiculo->save();
-                        DB::commit();
-                        return null;
                     }
+                    $vehiculo->save();
+                    $historico->id_vehiculo = $vehiculo->id;
+                    $historico->fecha_inicio = date('Y-m-d H:i:s');
+                    $historico->save();
+                    DB::commit();
+                    return null;
                 }
             } catch (\Exception $e) {
                 DB::rollBack();

@@ -38,6 +38,11 @@
                     :clase="claseNotificacion"
                 ></NotificationComponent>
             </div>
+            <div class="loading-div" v-if="isLoading">
+                <img
+                    src="https://media.tenor.com/G7LfW0O5qb8AAAAi/loading-gif.gif"
+                />
+            </div>
         </div>
     </app-layout>
 </template>
@@ -64,6 +69,7 @@ export default {
             warningNotification: false,
             claseNotificacion: "",
             mensajeNotificacion: "",
+            isLoading: false,
         };
     },
     methods: {
@@ -80,12 +86,14 @@ export default {
                 //     "/api/excel/upload",
                 //     form
                 // );
+                this.isLoading = true;
                 const response = await axios.post("/api/excel/upload", form, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 });
                 console.log("Response: ", response);
+                this.isLoading = false;
 
                 // Mostrar errores
                 if (
@@ -175,5 +183,22 @@ export default {
     max-height: 200px;
     overflow-y: auto;
     /* Agregarle un scroll horizontal */
+}
+
+.loading-div {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: transparent;
+    transition: 1s;
+}
+
+.loading-div img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
 }
 </style>
