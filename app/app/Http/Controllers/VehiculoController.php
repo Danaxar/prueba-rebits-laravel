@@ -7,6 +7,7 @@ use App\Models\Vehiculo;
 use App\Models\Vehiculos;
 use App\Models\Usuarios;
 use Illuminate\Support\Facades\DB;
+use App\Models\Historicos;
 
 class VehiculoController extends Controller
 {
@@ -92,16 +93,23 @@ class VehiculoController extends Controller
                 $newUser->nombre = $request->usuario["nombre"];
                 $newUser->apellidos = $request->usuario["apellidos"];
                 $newUser->correo = $request->usuario["correo"];
-                $newUser->save();  //*
+                $newUser->save();
                 dump($newUser);
-                // $vehiculo->id_usuario = $request->vehiculo["id_usuario"];  // Esto es nulo poh!!
                 $vehiculo->id_usuario = $newUser->id;
             } else {
                 $out->writeln("Usuario encontrado...");
                 $vehiculo->id_usuario = $usuarioEncontrado->id;
                 dump($usuarioEncontrado);
             }
-            $vehiculo->save();  //*
+            $vehiculo->save();
+
+            // Agregar al histórico
+            $historico = new Historicos();
+            $historico->id_usuario = $vehiculo->id_usuario;
+            $historico->id_vehiculo = $vehiculo->id;
+            $historico->fecha_inicio = date('Y-m-d H:i:s');
+            $historico->save();
+
             DB::commit();
             return response()->json(['message' => 'Vehículo actualizado correctamente'], 200);
         } catch (\Exception $e) {

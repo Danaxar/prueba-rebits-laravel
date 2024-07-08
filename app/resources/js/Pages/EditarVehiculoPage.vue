@@ -142,6 +142,11 @@
                     </button>
                 </div>
             </form>
+            <div class="loading-div" v-if="isLoading">
+                <img
+                    src="https://media.tenor.com/G7LfW0O5qb8AAAAi/loading-gif.gif"
+                />
+            </div>
         </div>
     </app-layout>
 </template>
@@ -174,6 +179,7 @@ export default {
                 apellidos: "García",
                 correo: "maria.garcia@example.com",
             },
+            isLoading: true,
         };
     },
     methods: {
@@ -211,17 +217,19 @@ export default {
         async updateVehiculo() {
             // Mandar el vehículo actualizado
             try {
-                // const response = await axios.post(
-                const response = await this.$inertia.post(
+                this.isLoading = true;
+                const response = await axios.post(
+                    // const response = await this.$inertia.post(
                     "/api/vehiculos/nuevoDueno",
                     {
                         vehiculo: this.vehiculo,
                         usuario: this.nuevoDueno,
                     }
                 );
-                // if (response.status == 200) {
-                //     alert("Vehículo actualizado correctamente");
-                // }
+                this.isLoading = false;
+                if (response.status == 200) {
+                    alert("Vehículo actualizado correctamente");
+                }
                 console.log("Respuesta updateVehiculo(): ", response);
             } catch (e) {
                 console.log(e);
@@ -237,3 +245,22 @@ export default {
     },
 };
 </script>
+
+<style scoped>
+.loading-div {
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: transparent;
+    transition: 1s;
+}
+
+.loading-div img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+}
+</style>
