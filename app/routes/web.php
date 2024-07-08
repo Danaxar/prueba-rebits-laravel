@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\VehiculoController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\HistoricoController;
 use Inertia\Inertia;
 
 // API
@@ -22,8 +23,14 @@ Route::prefix('api')->group(function () {
         Route::post('/nuevoDueno', [VehiculoController::class, 'nuevoDueno']);
     });
 
+    // Excel
     Route::prefix('excel')->group(function () {
         Route::post('/upload', [ExcelController::class, 'upload']);
+    });
+
+    // Historicos
+    Route::prefix('historicos')->group(function () {
+        Route::get('/', [HistoricoController::class, 'getAll']);
     });
 });
 
