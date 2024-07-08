@@ -6,12 +6,18 @@ use Maatwebsite\Excel\Concerns\ToModel;
 use App\Models\Usuarios;
 use App\Models\Vehiculos;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 class ExcelImport implements ToModel
 {
     private $current = 0;
     private $messages = [];
+    private $output;
 
+    public function __construct()
+    {
+        $this->output = new ConsoleOutput();
+    }
 
     // Manda un mensaje a la lista
     public function newMessage($m)
@@ -25,6 +31,7 @@ class ExcelImport implements ToModel
         return $this->messages;
     }
 
+    // Obtiene la cantidad de filas leidas
     public function getLines()
     {
         return $this->current;
@@ -34,8 +41,6 @@ class ExcelImport implements ToModel
     // Se ejecuta por cada fila del archivo excel
     public function model(array $row)
     {
-        $out = new \Symfony\Component\Console\Output\ConsoleOutput();
-        $out->writeln(".........");
         $this->current++;
 
         // Desde la 2da fila comienzan los datos
@@ -59,46 +64,32 @@ class ExcelImport implements ToModel
                 // Existe vehiculo?
                 $vehiculoEncontrado = Vehiculos::where('patente', $vehiculo->patente)->first();
                 if ($vehiculoEncontrado != null) {  // Si
-                    // Mismo usuario?
-                    // if ($vehiculoEncontrado->id_usuario == $usuario->id) {  // Si
-                    //     // No se guarda
-                    //     return;
-                    // } else {
-                    //     // Se actualiza la llave foránea del vehiculo
-                    //     $vehiculoEncontrado->id_usuario = $usuario->id;
-                    //     $vehiculoEncontrado->save();
-                    //     DB::commit();
-                    // }
-                    // return;
-
-                    $this->newMessage("El vehículo ya existe");
-                    return;
+                    $this->newMessage("El vehículo ya está registrado");
+                    DB::rollBack();
+                    return null;
                 } else {  // No
                     // Existe usuario?
                     $usuarioEncontrado = Usuarios::where('correo', $usuario->correo)->first();
-
-                    // Transformar objeto a texto
-                    // $out->writeln(print_r($usuarioEncontrado, true));
                     if ($usuarioEncontrado != null) {  // Si
+                        $this->output->writeln("Usuario existente encontrado. Asociando vehículo al usuario.");
                         // El usuario ya está en bd asi que solo se guarda el vehiculo con el id del usuario
                         $vehiculo->id_usuario = $usuarioEncontrado->id;
                         $vehiculo->save();
                         DB::commit();
-                        return;
+                        return null;
                     } else {  // No
-                        $vehiculo->id_usuario = $usuario->id;
-
+                        $this->output->writeln("Usuario y vehículo nuevos. Guardando ambos.");
                         // Ambos no existen asi que se guardan
                         $usuario->save();
+                        $vehiculo->id_usuario = $usuario->id;
                         $vehiculo->save();
                         DB::commit();
-                        return;
+                        return null;
                     }
                 }
-                return;
             } catch (\Exception $e) {
                 DB::rollBack();
-                $this->newMessage("El usuario y vehículo ya existen");
+                $this->newMessage("No se pudo guardar los datos: " . $e->getMessage());
             }
         }
     }
