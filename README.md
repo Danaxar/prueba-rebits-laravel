@@ -11,6 +11,25 @@ composer install
 npm install
 ```
 
+Luego, utilizar como referencia el .env.example (cambiar nombre a .env) y asegurarse de rellenar las siguientes variables:
+
+```
+DB_CONNECTION=
+DB_HOST=127.0.0.1
+DB_PORT=
+DB_DATABASE=
+DB_USERNAME=
+DB_PASSWORD=
+
+MAIL_MAILER=smtp
+MAIL_HOST=
+MAIL_PORT=
+MAIL_USERNAME=
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=tls
+EMAIL_TO=support@rebits.cl
+```
+
 # Como ejecutar
 
 En `/app` abrir dos terminales y ejecutar
