@@ -44,6 +44,14 @@ Luego crear una carpeta llamada storage y adentro crear las siguientes subcarpet
 
 Entonces habría que crear las carpetas /storage, /storage/app, /storage/framework y finalmente /storage/framework/views
 
+Y finalmente ejecutar:
+
+```
+php artisan migrate
+```
+
+para que se apliquen los cambios en la base de datos. Si todo sale bien, se puede proceder con la ejecución del programa
+
 # Como ejecutar
 
 En `/app` abrir dos terminales y ejecutar
