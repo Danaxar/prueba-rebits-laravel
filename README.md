@@ -30,6 +30,20 @@ MAIL_ENCRYPTION=tls
 EMAIL_TO=support@rebits.cl
 ```
 
+Luego crear una carpeta llamada storage y adentro crear las siguientes subcarpetas
+
+```
+/app (ruta inicial de la aplicación)
+  ...
+  /storage
+    /app
+    /framework
+      /views
+  ...
+```
+
+Entonces habría que crear las carpetas /storage, /storage/app, /storage/framework y finalmente /storage/framework/views
+
 # Como ejecutar
 
 En `/app` abrir dos terminales y ejecutar
